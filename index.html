@@ -19,8 +19,11 @@
             flex-direction: row;
             align-items: stretch;
         }
+        @media screen and (max-width:1024px){
+            #side-panel {display: none;}
+        }
 
-        #table {
+        #side-panel {
             flex-basis: 500px;
             overflow-y: scroll;
         }
@@ -53,17 +56,16 @@
 
 <body>
     <main id="container">
-        <div id="table">
+        <div id="side-panel">
 
-            <h2>Earthquake List</h2>
-            <button onclick="sortTable()">Sort by Magnitude</button>
+            <h2>Disc Golf Course List</h2>
+            <button onclick="sortTable()">Sort by Holes</button>
             
 
             <table>
                 <tr>
-                    <th>id</th>
-                    <th>magnitude</th>
-                    <th>timestamp</th>
+                    <th>name</th>
+                    <th>holes</th>
                 </tr>
             </table>
 
@@ -73,52 +75,51 @@
     </main>
     <script>
         mapboxgl.accessToken =
-            'pk.eyJ1IjoiamFrb2J6aGFvIiwiYSI6ImNpcms2YWsyMzAwMmtmbG5icTFxZ3ZkdncifQ.P9MBej1xacybKcDN_jehvw';
+            'pk.eyJ1Ijoiam9obnNjaCIsImEiOiJjbG9zdmtkb20wM3huMnFwa2Q0cWk2cnlmIn0.th6ktuM1-OmJ9_-Q58ru4Q';
         const map = new mapboxgl.Map({
             container: 'map', // container ID
             style: 'mapbox://styles/mapbox/satellite-v9', // style URL
-            zoom: 5.5, // starting zoom
-            center: [138.043, 38] // starting center
+            zoom: 9, // starting zoom
+            center: [-121.9, 47.5] // starting center
         });
 
 
         async function geojsonFetch() {
 
 
-            let response = await fetch('assets/earthquakes.geojson');
+            let response = await fetch('assets/dgc.geojson');
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            let earthquakes = await response.json();
+            let dgc = await response.json();
 
 
-            response = await fetch('assets/japan.json');
+            response = await fetch('assets/kingco.geojson');
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            let japan = await response.json();
+            let kingco = await response.json();
 
 
             var table = document.getElementsByTagName("table");
-            for (let i = 0; i < earthquakes.features.length; i++) {
-                // console.log(earthquakes.features[i].properties.id);
+            for (let i = 0; i < dgc.features.length; i++) {
+                // console.log(dgc.features[i].properties.id);
 
-                var lng = await earthquakes.features[i].geometry.coordinates[0];
-                var lat = await earthquakes.features[i].geometry.coordinates[1];
+                var lng = await dgc.features[i].geometry.coordinates[0];
+                var lat = await dgc.features[i].geometry.coordinates[1];
 
                 // Create an empty <tr> element and add it to the 1st position of the table:
                 var row = table[0].insertRow(-1);
 
                 var cell1 = row.insertCell(0);
                 var cell2 = row.insertCell(1);
-                var cell3 = row.insertCell(2);
-                cell1.innerHTML = await earthquakes.features[i].properties.id;
-                cell2.innerHTML = await earthquakes.features[i].properties.mag;
-                cell3.innerHTML = await new Date(earthquakes.features[i].properties.time).toLocaleDateString("en-US");
+                
+                cell1.innerHTML = await dgc.features[i].properties.name;
+                cell2.innerHTML = await dgc.features[i].properties.num_holes;
 
             }
 
@@ -129,15 +130,15 @@
 
 
 
-                map.addSource('earthquakes', {
+                map.addSource('dgc', {
                     type: 'geojson',
-                    data: earthquakes
+                    data: dgc
                 });
 
                 map.addLayer({
-                    'id': 'earthquakes-layer',
+                    'id': 'dgc-layer',
                     'type': 'circle',
-                    'source': 'earthquakes',
+                    'source': 'dgc',
                     'paint': {
                         'circle-radius': 8,
                         'circle-stroke-width': 2,
@@ -147,15 +148,15 @@
                 });
 
 
-                map.addSource('japan', {
+                map.addSource('kingco', {
                     type: 'geojson',
-                    data: japan
+                    data: kingco
                 });
 
                 map.addLayer({
-                    'id': 'japan-layer',
+                    'id': 'kingco-layer',
                     'type': 'fill',
-                    'source': 'japan',
+                    'source': 'kingco',
                     'paint': {
                         'fill-color': '#0080ff', // blue color fill
                         'fill-opacity': 0.5
