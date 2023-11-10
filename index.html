@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Load data from an external GeoJSON file</title>
+    <title>Jack Schreuder Geog328 Lab3: GeoJSON Loading</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.js"></script>
@@ -78,7 +78,7 @@
             'pk.eyJ1Ijoiam9obnNjaCIsImEiOiJjbG9zdmtkb20wM3huMnFwa2Q0cWk2cnlmIn0.th6ktuM1-OmJ9_-Q58ru4Q';
         const map = new mapboxgl.Map({
             container: 'map', // container ID
-            style: 'mapbox://styles/mapbox/satellite-v9', // style URL
+            style: 'mapbox://styles/mapbox/outdoors-v12', // style URL
             zoom: 9, // starting zoom
             center: [-121.9, 47.5] // starting center
         });
@@ -142,8 +142,8 @@
                     'paint': {
                         'circle-radius': 8,
                         'circle-stroke-width': 2,
-                        'circle-color': 'red',
-                        'circle-stroke-color': 'white'
+                        'circle-color': 'orange',
+                        'circle-stroke-color': 'gray'
                     }
                 });
 
@@ -158,8 +158,8 @@
                     'type': 'fill',
                     'source': 'kingco',
                     'paint': {
-                        'fill-color': '#0080ff', // blue color fill
-                        'fill-opacity': 0.5
+                        'fill-color': '#975df5', // purple color fill
+                        'fill-opacity': 0.4
                     }
                 });
 
